@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
-
+﻿import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LESSONS } from '../data/lessons';
 const CountUp: React.FC<{ end: number; duration: number }> = ({ end, duration }) => {
@@ -16,8 +15,6 @@ const CountUp: React.FC<{ end: number; duration: number }> = ({ end, duration })
   }, [end, duration]);
   return <>{val}</>;
 };
-
-
 
 const STATS = [
   { label: 'уроков', end: 8 },

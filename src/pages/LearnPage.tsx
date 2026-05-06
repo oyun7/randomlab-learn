@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import LessonsSection from '../components/LessonsSection';
 import { LESSONS, LESSON_GROUPS, getLessonBySlug, getPrevLesson, getNextLesson } from '../data/lessons';
@@ -7,9 +7,10 @@ const LearnPage: React.FC = () => {
   const { slug } = useParams<{ slug?: string }>();
   const navigate = useNavigate();
   const [activeLesson, setActiveLesson] = useState<string>(slug || '');
+
   useEffect(() => {
-  setActiveLesson(slug || '');
-}, [slug]);
+    setActiveLesson(slug || '');
+  }, [slug]);
 
   const lesson = getLessonBySlug(slug || '');
 
@@ -34,13 +35,16 @@ const LearnPage: React.FC = () => {
           <div key={group.tag}>
             <div className="learn-sidebar__group-label">{group.tag}</div>
             {group.lessons.map(l => (
-              <button key={l.slug} className={`learn-sidebar__btn ${activeLesson === l.slug ? 'is-active' : ''}`}
+              <button
+                key={l.slug}
+                className={`learn-sidebar__btn ${activeLesson === l.slug ? 'is-active' : ''}`}
                 onClick={() => goToLesson(l.slug)}
                 style={{
                   borderLeftColor: activeLesson === l.slug ? l.color : 'transparent',
                   background: activeLesson === l.slug ? `${l.color}18` : 'transparent',
                   color: activeLesson === l.slug ? '#fff' : undefined,
-                }}>
+                }}
+              >
                 <span style={{ fontSize: '1.2rem' }}>{l.emoji}</span>
                 <span>{l.title}</span>
               </button>
@@ -92,7 +96,6 @@ const LearnPage: React.FC = () => {
 
           /* ===== Контент урока ===== */
           <>
-            {/* Хлебные крошки */}
             <div className="breadcrumb">
               <span className="breadcrumb__link" onClick={() => navigate('/')}>Главная</span>
               <span>›</span>
@@ -101,7 +104,6 @@ const LearnPage: React.FC = () => {
               <span style={{ color: lesson.color }}>{lesson.title}</span>
             </div>
 
-            {/* Заголовок урока */}
             <div style={{ marginBottom: '48px' }}>
               <div style={{ fontSize: '3rem', marginBottom: '16px' }}>{lesson.emoji}</div>
               <div style={{
@@ -122,7 +124,6 @@ const LearnPage: React.FC = () => {
               </h1>
             </div>
 
-            {/* Секции урока */}
             {lesson.sections.map((section, i) => (
               <div
                 key={i}
@@ -148,20 +149,21 @@ const LearnPage: React.FC = () => {
               </div>
             ))}
 
-            {/* Навигация между уроками */}
             <div className="lesson-nav">
               {getPrevLesson(lesson) && (
-                  <button className="lesson-nav__btn" onClick={() => goToLesson(getPrevLesson(lesson)!.slug)}>
-                    ← Предыдущий урок
-                  </button>
-                )}
-                {getNextLesson(lesson) && (
-                  <button className="lesson-nav__btn lesson-nav__btn--next"
-                    onClick={() => goToLesson(getNextLesson(lesson)!.slug)}
-                    style={{ background: lesson.color }}>
-                    Следующий урок →
-                  </button>
-                )}
+                <button className="lesson-nav__btn" onClick={() => goToLesson(getPrevLesson(lesson)!.slug)}>
+                  ← Предыдущий урок
+                </button>
+              )}
+              {getNextLesson(lesson) && (
+                <button
+                  className="lesson-nav__btn lesson-nav__btn--next"
+                  onClick={() => goToLesson(getNextLesson(lesson)!.slug)}
+                  style={{ background: lesson.color }}
+                >
+                  Следующий урок →
+                </button>
+              )}
             </div>
           </>
         )}
