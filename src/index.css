@@ -543,7 +543,7 @@ a {
 .learn-main {
   flex: 1;
   padding: clamp(24px, 4vw, 56px);
-  max-width: 760px;
+  max-width: 100%;
   overflow-x: hidden;
 }
 
