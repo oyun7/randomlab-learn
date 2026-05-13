@@ -17,8 +17,8 @@ const CountUp: React.FC<{ end: number; duration: number }> = ({ end, duration })
 };
 
 const STATS = [
-  { label: 'уроков', end: 8 },
-  { label: 'экспериментов', end: 12 },
+  { label: 'уроков', end: 9 },
+  { label: 'экспериментов', end: 10 },
   { label: 'задач', end: 48 },
   { label: 'учеников', end: 320 },
 ];
@@ -81,7 +81,7 @@ const LessonsSection: React.FC = () => {
     <section className="lessons">
       <div className="lessons__header">
         <h2 className="lessons__title">Чему ты научишься</h2>
-        <p className="lessons__subtitle">4 урока с живыми экспериментами прямо в браузере</p>
+        <p className="lessons__subtitle">10 уроков с живыми экспериментами прямо в браузере</p>
       </div>
 
       <div className="lessons__grid">
