@@ -62,6 +62,12 @@ const LearnPage: React.FC = () => {
           >
             🎲 Открыть эксперименты
           </a>
+          <button
+            className="learn-sidebar__tasks-btn"
+            onClick={() => navigate('/tasks')}
+          >
+            📝 Дополнительные задачи
+          </button>
         </div>
       </aside>
 

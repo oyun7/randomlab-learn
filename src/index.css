@@ -537,6 +537,37 @@ a {
   font-family: 'Mulish', sans-serif;
   font-weight: 700;
   font-size: 0.85rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.learn-sidebar__experiments-btn:hover {
+  background: rgba(167, 139, 250, 0.18);
+  border-color: rgba(167, 139, 250, 0.3);
+}
+
+.learn-sidebar__tasks-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border-radius: 10px;
+  background: rgba(251, 146, 60, 0.12);
+  border: 1px solid rgba(251, 146, 60, 0.2);
+  color: #fb923c;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.learn-sidebar__tasks-btn:hover {
+  background: rgba(251, 146, 60, 0.18);
+  border-color: rgba(251, 146, 60, 0.3);
 }
 
 /* Основной контент */
@@ -903,4 +934,155 @@ a {
   color: var(--text-dim);
   line-height: 1.7;
   margin: 0;
+}
+
+/* =============================================
+   TASKS PAGE (Страница дополнительных задач)
+   ============================================= */
+.tasks-page {
+  min-height: 100vh;
+  padding-top: var(--navbar-h);
+  background: var(--bg);
+}
+
+.tasks-page__container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+/* ── Фильтры ── */
+.tasks-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 40px;
+  padding: 24px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.tasks-filters__group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tasks-filters__label {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.tasks-filters__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tasks-filters__btn {
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: var(--text-dim);
+  font-family: 'Mulish', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.tasks-filters__btn:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.tasks-filters__btn.is-active {
+  background: rgba(167,139,250,0.15);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── Статистика ── */
+.tasks-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding: 24px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.tasks-stats__item {
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+}
+
+.tasks-stats__number {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.tasks-stats__label {
+  font-family: 'Mulish', sans-serif;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── Список задач ── */
+.tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── Тег урока в задаче ── */
+.task-item__lesson-tag {
+  font-size: 0.75rem;
+  opacity: 0.6;
+  margin-left: auto;
+  margin-right: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+/* ── Адаптивность ── */
+@media (max-width: 768px) {
+  .tasks-filters__buttons {
+    flex-direction: column;
+  }
+
+  .tasks-filters__btn {
+    width: 100%;
+    text-align: left;
+  }
+
+  .tasks-stats {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .tasks-stats__item {
+    min-width: auto;
+  }
+
+  .task-item__lesson-tag {
+    display: none;
+  }
 }

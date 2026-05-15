@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getTasksByLesson, type Task } from '../data/tasks';
+import { getSimulatorTasksByLesson, type Task } from '../data/tasks';
 
 const LEVEL_COLORS: Record<string, string> = {
   'ОГЭ':              '#4ade80',
@@ -53,7 +53,7 @@ const TaskItem: React.FC<{ task: Task }> = ({ task }) => {
 };
 
 const TasksBlock: React.FC<{ lessonSlug: string; color: string }> = ({ lessonSlug, color }) => {
-  const tasks = getTasksByLesson(lessonSlug);
+  const tasks = getSimulatorTasksByLesson(lessonSlug);
 
   return (
     <div className="tasks-block" style={{ margin: '60px 0' }}>
@@ -62,8 +62,8 @@ const TasksBlock: React.FC<{ lessonSlug: string; color: string }> = ({ lessonSlu
         style={{ borderColor: color }}
         onClick={() => {}} // можно потом добавить состояние
       >
-        <span style={{ color }}>📝</span>
-        <span>Задачи к уроку</span>
+        <span style={{ color }}>🔬</span>
+        <span>Задачи с симулятором</span>
         <span className="tasks-block__count" style={{ background: `${color}22`, color }}>
           {tasks.length}
         </span>
@@ -79,8 +79,8 @@ const TasksBlock: React.FC<{ lessonSlug: string; color: string }> = ({ lessonSlu
           textAlign: 'center',
           marginTop: '16px'
         }}>
-          Задачи для этого урока пока не добавлены<br />
-          <small>Slug урока: <code>{lessonSlug}</code></small>
+          Для этого урока нет задач с симулятором<br />
+          <small style={{ opacity: 0.7 }}>Попробуй другие уроки или перейди в раздел «Дополнительные задачи»</small>
         </div>
       ) : (
         <div className="tasks-block__list" style={{ marginTop: '20px' }}>

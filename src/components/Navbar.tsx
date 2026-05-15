@@ -13,6 +13,7 @@ const Navbar: React.FC = () => {
         <div className="navbar__links">
           <Link to="/" className="navbar__link">Главная</Link>
           <Link to="/learn" className="navbar__link">Уроки</Link>
+          <Link to="/tasks" className="navbar__link">Задачи</Link>
           <a
             href="https://randlab1.vercel.app/"
             target="_blank"
@@ -51,6 +52,9 @@ const Navbar: React.FC = () => {
         </Link>
         <Link to="/learn" className="navbar__dropdown-link" onClick={() => setMenuOpen(false)}>
           📚 Уроки
+        </Link>
+        <Link to="/tasks" className="navbar__dropdown-link" onClick={() => setMenuOpen(false)}>
+          📝 Задачи
         </Link>
         <a
           href="https://randlab1.vercel.app/"
