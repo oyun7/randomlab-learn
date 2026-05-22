@@ -2,7 +2,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import LessonsSection from '../components/LessonsSection';
 import {  LESSON_GROUPS, getLessonBySlug, getPrevLesson, getNextLesson } from '../data/lessons';
-import TasksBlock from '../components/TasksBlock';
 
 const LearnPage: React.FC = () => {
   const { slug } = useParams<{ slug?: string }>();
@@ -62,12 +61,6 @@ const LearnPage: React.FC = () => {
           >
             🎲 Открыть эксперименты
           </a>
-          <button
-            className="learn-sidebar__tasks-btn"
-            onClick={() => navigate('/tasks')}
-          >
-            📝 Дополнительные задачи
-          </button>
         </div>
       </aside>
 
@@ -156,7 +149,8 @@ const LearnPage: React.FC = () => {
               </div>
             ))}
 
-            <TasksBlock lessonSlug={lesson.slug} color={lesson.color} />
+            // Компонент TasksBlock отображает задания, связанные с текущим уроком
+                    
             
             <div className="lesson-nav">
               {getPrevLesson(lesson) && (

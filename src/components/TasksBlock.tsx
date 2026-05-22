@@ -1,27 +1,17 @@
 import React, { useState } from 'react';
-import { getSimulatorTasksByLesson, type Task } from '../data/tasks';
-
-const LEVEL_COLORS: Record<string, string> = {
-  'ОГЭ':              '#4ade80',
-  'ЕГЭ базовый':      '#38bdf8',
-  'ЕГЭ профильный':   '#a78bfa',
-  'ЕГЭ повышенный':   '#f472b6',
-  'Симулятор':        '#fb923c',
-};
+import { type Task } from '../data/tasks';
 
 const TaskItem: React.FC<{ task: Task }> = ({ task }) => {
   const [open, setOpen] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
-  const color = LEVEL_COLORS[task.level] || '#94a3b8';
 
   return (
     <div className="task-item">
       <button className="task-item__header" onClick={() => setOpen(!open)}>
-        <span className="task-item__badge" style={{ background: `${color}22`, color }}>
-          {task.level}
-        </span>
-        <span className="task-item__num">Задание {task.id}</span>
-        {task.simulatorHint && <span className="task-item__sim-badge">🔬 Симулятор</span>}
+        <span className="task-item__num">Задача {task.id}</span>
+        {task.simulatorHint && (
+          <span className="task-item__sim-badge">🔬 Симулятор</span>
+        )}
         <span className="task-item__arrow">{open ? '▲' : '▼'}</span>
       </button>
 
@@ -52,37 +42,27 @@ const TaskItem: React.FC<{ task: Task }> = ({ task }) => {
   );
 };
 
-const TasksBlock: React.FC<{ lessonSlug: string; color: string }> = ({ lessonSlug, color }) => {
-  const tasks = getSimulatorTasksByLesson(lessonSlug);
+const TasksBlock: React.FC<{ tasks: Task[]; color: string }> = ({ tasks, color }) => {
+  const [expanded, setExpanded] = useState(true);
+
+  if (tasks.length === 0) return null;
 
   return (
     <div className="tasks-block" style={{ margin: '60px 0' }}>
       <button
         className="tasks-block__toggle"
         style={{ borderColor: color }}
-        onClick={() => {}} // можно потом добавить состояние
+        onClick={() => setExpanded(!expanded)}
       >
-        <span style={{ color }}>🔬</span>
-        <span>Задачи с симулятором</span>
+        <span style={{ color }}>📝</span>
+        <span>Задачи</span>
         <span className="tasks-block__count" style={{ background: `${color}22`, color }}>
           {tasks.length}
         </span>
+        <span className="task-item__arrow">{expanded ? '▲' : '▼'}</span>
       </button>
 
-      {tasks.length === 0 ? (
-        <div style={{
-          padding: '32px',
-          background: '#1f293720',
-          border: `2px dashed ${color}40`,
-          borderRadius: '12px',
-          color: '#94a3b8',
-          textAlign: 'center',
-          marginTop: '16px'
-        }}>
-          Для этого урока нет задач с симулятором<br />
-          <small style={{ opacity: 0.7 }}>Попробуй другие уроки или перейди в раздел «Дополнительные задачи»</small>
-        </div>
-      ) : (
+      {expanded && (
         <div className="tasks-block__list" style={{ marginTop: '20px' }}>
           {tasks.map(task => (
             <TaskItem key={task.id} task={task} />
