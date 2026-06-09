@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import LessonsSection from '../components/LessonsSection';
+import MathText from '../components/MathText';
 import {
   LESSON_GROUPS,
   getLessonBySlug,
@@ -535,13 +536,7 @@ const LearnPage: React.FC = () => {
                 >
                   {section.heading}
                 </h2>
-                {section.body.split('\n').map((line, j) =>
-                  line.trim() === '' ? (
-                    <br key={j} />
-                  ) : (
-                    <p key={j} className="lesson-section__text">{line}</p>
-                  )
-                )}
+                <MathText text={section.body} className="lesson-section__text" />
               </div>
             ))}
 

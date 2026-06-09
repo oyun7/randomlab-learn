@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -17,11 +16,13 @@
     "clsx": "^2.1.1",
     "framer-motion": "^12.38.0",
     "gsap": "^3.15.0",
+    "katex": "^0.17.0",
     "lottie-react": "^2.4.1",
     "react": "^19.2.5",
     "react-countup": "^6.5.3",
     "react-dom": "^19.2.5",
     "react-hot-toast": "^2.6.0",
+    "react-katex": "^3.1.0",
     "react-router-dom": "^7.14.2"
   },
   "devDependencies": {
