@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import LessonsSection from '../components/LessonsSection';
 import {
@@ -549,7 +549,7 @@ const LearnPage: React.FC = () => {
               2. Задачи «Адаптировано под симулятор» из REGULAR_TASKS
                  Привязка по категории → slug урока (CATEGORY_TO_LESSON_SLUG)
             */}
-            <AdaptedSimTasksBlock slug={lesson.slug} color={lesson.color} />
+            
 
             {/*
               3. Симуляторные задачи из LESSON_SIM_TASKS
