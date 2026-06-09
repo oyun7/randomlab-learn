@@ -20,7 +20,7 @@ const Navbar: React.FC = () => {
             rel="noopener noreferrer"
             className="navbar__btn"
           >
-            🎲 Эксперименты
+            🎲 К экспериментам
           </a>
         </div>
 
