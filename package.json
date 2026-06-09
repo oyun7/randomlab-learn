@@ -18,6 +18,7 @@
     "gsap": "^3.15.0",
     "katex": "^0.17.0",
     "lottie-react": "^2.4.1",
+    "prop-types": "^15.8.1",
     "react": "^19.2.5",
     "react-countup": "^6.5.3",
     "react-dom": "^19.2.5",

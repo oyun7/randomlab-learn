@@ -9,34 +9,50 @@ interface MathTextProps {
 
 /**
  * Компонент для рендеринга текста с поддержкой KaTeX формул.
- * Поддерживает inline формулы: $...$
- * и блочные формулы: $$...$$
+ * Поддерживает:
+ * - блочные формулы: $$...$$  (на отдельной строке)
+ * - inline формулы: $...$  (внутри текста)
  */
 export const MathText: React.FC<MathTextProps> = ({ text, className }) => {
-  // Разбиваем текст по строкам, затем обрабатываем каждую строку
+  // Сначала разбиваем на блочные формулы (на отдельных строках)
+  // затем обрабатываем каждый блок для inline формул
   const lines = text.split('\n');
 
   return (
     <>
-      {lines.map((line, idx) => {
-        if (line.trim() === '') {
-          return <br key={idx} />;
+      {lines.map((line, lineIdx) => {
+        const trimmed = line.trim();
+        
+        // Пустая строка
+        if (trimmed === '') {
+          return <br key={lineIdx} />;
         }
 
-        // Проверяем, есть ли блочная формула на всей строке
-        if (line.trim().startsWith('$$') && line.trim().endsWith('$$')) {
-          const formula = line.trim().slice(2, -2).trim();
-          return (
-            <div key={idx} style={{ margin: '1em 0', overflow: 'auto' }}>
-              <BlockMath>{formula}</BlockMath>
-            </div>
-          );
+        // Блочная формула (вся строка между $$)
+        if (trimmed.startsWith('$$') && trimmed.endsWith('$$') && trimmed.length > 4) {
+          const formula = trimmed.slice(2, -2).trim();
+          if (formula) {
+            return (
+              <div 
+                key={lineIdx}
+                style={{ 
+                  margin: '1em 0',
+                  padding: '0.5em',
+                  overflowX: 'auto',
+                  display: 'flex',
+                  justifyContent: 'center'
+                }}
+              >
+                <BlockMath>{formula}</BlockMath>
+              </div>
+            );
+          }
         }
 
-        // Рендерим строку с inline формулами
+        // Строка с inline формулами
         return (
-          <p key={idx} className={className}>
-            {renderInlineFormulas(line)}
+          <p key={lineIdx} className={className} style={{ margin: '0.5em 0' }}>
+            {renderInlineFormulas(trimmed)}
           </p>
         );
       })}
@@ -45,22 +61,52 @@ export const MathText: React.FC<MathTextProps> = ({ text, className }) => {
 };
 
 /**
- * Вспомогательная функция для рендеринга inline формул в обычном тексте
+ * Парсит строку и рендерит inline формулы $...$
  */
 function renderInlineFormulas(text: string): React.ReactNode[] {
-  // Разбиваем по inline формулам $...$
-  const parts = text.split(/(\$[^$]+\$)/);
+  if (!text || text.length === 0) {
+    return [];
+  }
 
-  return parts.map((part, idx) => {
-    if (part.startsWith('$') && part.endsWith('$') && part.length > 1) {
-      // Это inline формула
-      const formula = part.slice(1, -1);
-      return <InlineMath key={idx}>{formula}</InlineMath>;
+  const result: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let inFormula = false;
+  let formulaStart = 0;
+
+  for (let i = 0; i < text.length; i++) {
+    if (text[i] === '$') {
+      // Проверяем, что это не $$
+      if (i + 1 < text.length && text[i + 1] === '$') {
+        continue; // Это $$, пропускаем (для блочных формул)
+      }
+
+      if (!inFormula) {
+        // Начало формулы
+        if (lastIndex < i) {
+          result.push(<span key={`text-${result.length}`}>{text.slice(lastIndex, i)}</span>);
+        }
+        inFormula = true;
+        formulaStart = i;
+      } else {
+        // Конец формулы
+        const formula = text.slice(formulaStart + 1, i);
+        if (formula) {
+          result.push(
+            <InlineMath key={`math-${result.length}`}>{formula}</InlineMath>
+          );
+        }
+        inFormula = false;
+        lastIndex = i + 1;
+      }
     }
+  }
 
-    // Обычный текст
-    return <span key={idx}>{part}</span>;
-  });
+  // Остаток текста после последней формулы
+  if (lastIndex < text.length) {
+    result.push(<span key={`text-${result.length}`}>{text.slice(lastIndex)}</span>);
+  }
+
+  return result.length > 0 ? result : [text];
 }
 
 export default MathText;
