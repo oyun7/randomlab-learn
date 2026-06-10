@@ -1,49 +1,48 @@
-import React from 'react';
-import { InlineMath, BlockMath } from 'react-katex';
+import React, { useRef, useEffect } from 'react';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
 
 interface MathTextProps {
   text: string;
   className?: string;
 }
 
-/**
- * Компонент для рендеринга текста с поддержкой KaTeX формул.
- * Поддерживает:
- * - блочные формулы: $$...$$  (на отдельной строке)
- * - inline формулы: $...$  (внутри текста)
- */
+const KATEX_OPTS = {
+  strict: false,
+  throwOnError: false,
+  output: 'html' as const,
+};
+
+function renderKatex(formula: string, displayMode: boolean): string {
+  try {
+    return katex.renderToString(formula, { ...KATEX_OPTS, displayMode });
+  } catch {
+    return formula;
+  }
+}
+
 export const MathText: React.FC<MathTextProps> = ({ text, className }) => {
-  // Сначала разбиваем на блочные формулы (на отдельных строках)
-  // затем обрабатываем каждый блок для inline формул
   const lines = text.split('\n');
 
   return (
     <>
       {lines.map((line, lineIdx) => {
         const trimmed = line.trim();
-        
-        // Пустая строка
+
         if (trimmed === '') {
           return <br key={lineIdx} />;
         }
 
-        // Блочная формула (вся строка между $$)
+        // Блочная формула $$...$$
         if (trimmed.startsWith('$$') && trimmed.endsWith('$$') && trimmed.length > 4) {
           const formula = trimmed.slice(2, -2).trim();
           if (formula) {
             return (
-              <div 
+              <div
                 key={lineIdx}
-                style={{ 
-                  margin: '1em 0',
-                  padding: '0.5em',
-                  overflowX: 'auto',
-                  display: 'flex',
-                  justifyContent: 'center'
-                }}
-              >
-                <BlockMath>{formula}</BlockMath>
-              </div>
+                style={{ margin: '1em 0', overflowX: 'auto', display: 'flex', justifyContent: 'center' }}
+                dangerouslySetInnerHTML={{ __html: renderKatex(formula, true) }}
+              />
             );
           }
         }
@@ -59,53 +58,28 @@ export const MathText: React.FC<MathTextProps> = ({ text, className }) => {
   );
 };
 
-/**
- * Парсит строку и рендерит inline формулы $...$
- */
 function renderInlineFormulas(text: string): React.ReactNode[] {
-  if (!text || text.length === 0) {
-    return [];
-  }
-
-  const result: React.ReactNode[] = [];
+  const parts: React.ReactNode[] = [];
+  const regex = /\$([^$]+)\$/g;
   let lastIndex = 0;
-  let inFormula = false;
-  let formulaStart = 0;
+  let match: RegExpExecArray | null;
 
-  for (let i = 0; i < text.length; i++) {
-    if (text[i] === '$') {
-      // Проверяем, что это не $$
-      if (i + 1 < text.length && text[i + 1] === '$') {
-        continue; // Это $$, пропускаем (для блочных формул)
-      }
-
-      if (!inFormula) {
-        // Начало формулы
-        if (lastIndex < i) {
-          result.push(<span key={`text-${result.length}`}>{text.slice(lastIndex, i)}</span>);
-        }
-        inFormula = true;
-        formulaStart = i;
-      } else {
-        // Конец формулы
-        const formula = text.slice(formulaStart + 1, i);
-        if (formula) {
-          result.push(
-            <InlineMath key={`math-${result.length}`}>{formula}</InlineMath>
-          );
-        }
-        inFormula = false;
-        lastIndex = i + 1;
-      }
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(<span key={`t-${lastIndex}`}>{text.slice(lastIndex, match.index)}</span>);
     }
+    const html = renderKatex(match[1], false);
+    parts.push(
+      <span key={`m-${match.index}`} dangerouslySetInnerHTML={{ __html: html }} />
+    );
+    lastIndex = regex.lastIndex;
   }
 
-  // Остаток текста после последней формулы
   if (lastIndex < text.length) {
-    result.push(<span key={`text-${result.length}`}>{text.slice(lastIndex)}</span>);
+    parts.push(<span key={`t-${lastIndex}`}>{text.slice(lastIndex)}</span>);
   }
 
-  return result.length > 0 ? result : [text];
+  return parts.length > 0 ? parts : [<span key="all">{text}</span>];
 }
 
 export default MathText;
